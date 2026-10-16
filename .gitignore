@@ -1,0 +1,7 @@
+test/linker.map
+test/memory.mem
+test/obj/
+test/riscv-tests/
+test/test.bin
+test/testbench.vvp
+test/wave.vcd
