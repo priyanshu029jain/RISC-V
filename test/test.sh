@@ -19,7 +19,7 @@ MABI="ilp32" # specifies the ABI (Application Binary Interface) that should be u
 library_files="./lib/*.c" # all custom library files
             
 #-nostartfiles = dont include the standard system startup code (useful for creating custom startup code or for embedded systems where the startup code may be platform-specific)
-GCC_FLAGS="-march=$MARCH -mabi=$MABI -ffunction-sections -fdata-sections -nostartfiles $FPIC "
+GCC_FLAGS="--specs=picolibc.specs -march=$MARCH -mabi=$MABI -ffunction-sections -fdata-sections -nostartfiles $FPIC "
 
 #-Wl = pass arguments to linker: 
 #       --gc-sections = garbage collection of unused sections

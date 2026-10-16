@@ -965,6 +965,19 @@ module i2c //SCCB mode(no pullups resistors needed) [REPEATED START NOT SUPPORTE
     ); 
      
 
+     //FSM state declarations
+    localparam[3:0] idle=0,
+                    starting=1,
+                    packet=2,
+                    ack_servant=3,
+                    read=4,
+                    ack_master=5,
+                    stop_1=6,
+                    stop_2=7,
+                    stop_or_read = 8,
+                    stop_or_write = 9;
+    reg[3:0] state_q=idle,state_d;
+
     //memory-mapped registers for controlling i2c
     wire[7:0] i2c_busy = {7'b0, !((state_q == idle) || (state_q == stop_or_write) || (state_q == stop_or_read))}; //check if busy (busy unless we are on these states)
     wire[7:0] i2c_read_data_ready = {7'b0, (state_q == stop_or_read)}; //check if data is ready to be read (data is ready ONLY WHEN we are already waiting for another read request!)
@@ -981,18 +994,6 @@ module i2c //SCCB mode(no pullups resistors needed) [REPEATED START NOT SUPPORTE
                     half= full/2,           
                     counter_width=$clog2(full);
          
-     //FSM state declarations
-    localparam[3:0] idle=0,
-                    starting=1,
-                    packet=2,
-                    ack_servant=3,
-                    read=4,
-                    ack_master=5,
-                    stop_1=6,
-                    stop_2=7,
-                    stop_or_read = 8,
-                    stop_or_write = 9;
-    reg[3:0] state_q=idle,state_d;
      reg op_q=0,op_d;
      reg[3:0] idx_q=0,idx_d;
      reg[8:0] wr_data_q=0,wr_data_d;
